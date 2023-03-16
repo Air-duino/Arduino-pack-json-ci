@@ -5,9 +5,10 @@ import hashlib
 import os
 
 packagesPath = "package_air_index.json"
+packagesCNPath = "package_air_cn_index.json"
 
 GCCVersion = "12.2.1-1.2"
-AirISPVersion = "" #不定义具体的版本，在GetAirISPVersion函数中创造
+AirISPVersion = ""  # 不定义具体的版本，在GetAirISPVersion函数中创造
 CMSISVersion = "5.7.0"
 PlatformsVersion = []
 
@@ -26,6 +27,7 @@ def GetAirISPVersion():
         AirISPVersion = str(tags[0])
     else:
         print(f"Request failed: {response.status_code}")
+
 
 def GetRepoVersion(owner, repo):
     url = f"https://api.github.com/repos/{owner}/{repo}/releases"
@@ -89,6 +91,7 @@ def downloadFile(url):
 
 def DownloadAndCheck(url, fileName, host, suffixName):
     temp = {}
+    tempCn = {}
     url += fileName
     temp['host'] = host
     tempUrl = url + suffixName
@@ -99,90 +102,123 @@ def DownloadAndCheck(url, fileName, host, suffixName):
     tempPath = fileName + suffixName
     temp['checksum'] = "SHA-256:" + ComputeSHA256(tempPath)
     temp['size'] = ComputeSize(tempPath)
-    return temp
+
+    tempCn = temp
+    tempCn['url'] = "https://arduino.luatos.com/" + fileName + suffixName
+    return temp, tempCn
 
 
 def GCC():
     data = {'name': "xpack-arm-none-eabi-gcc", 'version': GCCVersion}
+    dataCn = data
     system = []
+    systemCn = []
 
     def f(host, suffixName):
         url = "https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/download/v" + GCCVersion + "/"
         fileName = "xpack-arm-none-eabi-gcc-" + GCCVersion + "-"
         return DownloadAndCheck(url, fileName, host, suffixName)
 
-    temp = f("x86_64-mingw32", "win32-x64.zip")
+    temp, tempCn = f("x86_64-mingw32", "win32-x64.zip")
     system.append(temp)
-    temp = f("i686-mingw32", "win32-x64.zip")
+    systemCn.append(tempCn)
+    temp, tempCn = f("i686-mingw32", "win32-x64.zip")
     system.append(temp)
-    temp = f("x86_64-apple-darwin", "darwin-x64.tar.gz")
+    systemCn.append(tempCn)
+    temp, tempCn = f("x86_64-apple-darwin", "darwin-x64.tar.gz")
     system.append(temp)
-    temp = f("arm64-apple-darwin", "darwin-arm64.tar.gz")
+    systemCn.append(tempCn)
+    temp, tempCn = f("arm64-apple-darwin", "darwin-arm64.tar.gz")
     system.append(temp)
-    temp = f("arm-linux-gnueabihf", "linux-arm.tar.gz")
+    systemCn.append(tempCn)
+    temp, tempCn = f("arm-linux-gnueabihf", "linux-arm.tar.gz")
     system.append(temp)
-    temp = f("aarch64-linux-gnu", "linux-arm64.tar.gz")
+    systemCn.append(tempCn)
+    temp, tempCn = f("aarch64-linux-gnu", "linux-arm64.tar.gz")
     system.append(temp)
-    temp = f("x86_64-pc-linux-gnu", "linux-x64.tar.gz")
+    systemCn.append(tempCn)
+    temp, tempCn = f("x86_64-pc-linux-gnu", "linux-x64.tar.gz")
     system.append(temp)
+    systemCn.append(tempCn)
     data['systems'] = system
-    return data
+    dataCn['systems'] = systemCn
+    return data, dataCn
 
 
 def AirISP():
     data = {'name': "AirISP", 'version': AirISPVersion}
+    dataCn = data
     system = []
+    systemCn = []
 
     def f(host, suffixName):
         url = "https://github.com/Air-duino/AirISP/releases/download/" + AirISPVersion + "/"
         fileName = "AirISP-"
         return DownloadAndCheck(url, fileName, host, suffixName)
 
-    temp = f("x86_64-mingw32", "win-x64.zip")
+    temp, tempCn = f("x86_64-mingw32", "win-x64.zip")
     system.append(temp)
-    temp = f("i686-mingw32", "win-x64.zip")
+    systemCn.append(tempCn)
+    temp, tempCn = f("i686-mingw32", "win-x64.zip")
     system.append(temp)
-    temp = f("x86_64-apple-darwin", "osx-x64.zip")
+    systemCn.append(tempCn)
+    temp, tempCn = f("x86_64-apple-darwin", "osx-x64.zip")
     system.append(temp)
-    temp = f("arm64-apple-darwin", "osx-arm64.zip")
+    systemCn.append(tempCn)
+    temp, tempCn = f("arm64-apple-darwin", "osx-arm64.zip")
     system.append(temp)
-    temp = f("arm-linux-gnueabihf", "linux-arm.zip")
+    systemCn.append(tempCn)
+    temp, tempCn = f("arm-linux-gnueabihf", "linux-arm.zip")
     system.append(temp)
-    temp = f("aarch64-linux-gnu", "linux-arm64.zip")
+    systemCn.append(tempCn)
+    temp, tempCn = f("aarch64-linux-gnu", "linux-arm64.zip")
     system.append(temp)
-    temp = f("x86_64-pc-linux-gnu", "linux-x64.zip")
+    systemCn.append(tempCn)
+    temp, tempCn = f("x86_64-pc-linux-gnu", "linux-x64.zip")
     system.append(temp)
+    systemCn.append(tempCn)
+
     data['systems'] = system
-    print(data)
-    return data
+    dataCn['systems'] = systemCn
+    return data, dataCn
 
 
 def CMSIS():
     data = {'name': "CMSIS", 'version': CMSISVersion}
+    dataCn = data
     system = []
+    systemCn = []
 
     def f(host, suffixName):
         url = "https://github.com/stm32duino/ArduinoModule-CMSIS/releases/download/" + CMSISVersion + "/"
         fileName = "CMSIS-" + CMSISVersion
         return DownloadAndCheck(url, fileName, host, suffixName)
 
-    temp = f("x86_64-mingw32", ".tar.bz2")
+    temp, tempCn = f("x86_64-mingw32", ".tar.bz2")
     system.append(temp)
-    temp = f("i686-mingw32", ".tar.bz2")
+    systemCn.append(tempCn)
+    temp, tempCn = f("i686-mingw32", ".tar.bz2")
     system.append(temp)
-    temp = f("x86_64-apple-darwin", ".tar.bz2")
+    systemCn.append(tempCn)
+    temp, tempCn = f("x86_64-apple-darwin", ".tar.bz2")
     system.append(temp)
-    temp = f("arm64-apple-darwin", ".tar.bz2")
+    systemCn.append(tempCn)
+    temp, tempCn = f("arm64-apple-darwin", ".tar.bz2")
     system.append(temp)
-    temp = f("arm-linux-gnueabihf", ".tar.bz2")
+    systemCn.append(tempCn)
+    temp, tempCn = f("arm-linux-gnueabihf", ".tar.bz2")
     system.append(temp)
-    temp = f("aarch64-linux-gnu", ".tar.bz2")
+    systemCn.append(tempCn)
+    temp, tempCn = f("aarch64-linux-gnu", ".tar.bz2")
     system.append(temp)
-    temp = f("x86_64-pc-linux-gnu", ".tar.bz2")
+    systemCn.append(tempCn)
+    temp, tempCn = f("x86_64-pc-linux-gnu", ".tar.bz2")
     system.append(temp)
+    systemCn.append(tempCn)
+
     data['systems'] = system
-    print(data)
-    return data
+    dataCn['systems'] = systemCn
+    return data,dataCn
 
 
 def PlatformsAirMCU(version):
@@ -190,6 +226,7 @@ def PlatformsAirMCU(version):
     url = "https://github.com/Air-duino/Arduino-AirMCU/releases/download/" + version + "/" + fileName
     downloadFile(url)
     data = {}
+    dataCn = {}
     data['name'] = "Air MCU"
     data['architecture'] = "AirMCU"
     data['version'] = version
@@ -203,34 +240,62 @@ def PlatformsAirMCU(version):
     data['toolsDependencies'] = [{'packager': "AirM2M", 'name': "xpack-arm-none-eabi-gcc", 'version': GCCVersion},
                                  {'packager': "AirM2M", 'name': "CMSIS", 'version': CMSISVersion},
                                  {'packager': "AirM2M", 'name': "AirISP", 'version': AirISPVersion}]
-    return data
+    dataCn = data
+    dataCn['url'] = "https://arduino.luatos.com/" + version + "/" + fileName
+    return data, dataCn
 
 
 def PackagesAirM2M():
     data = {}
+    dataCn = {}
     data['name'] = "AirM2M"
     data['maintainer'] = "AirM2M"
     data['websiteURL'] = "https://github.com/Air-duino"
     data['email'] = "HalfSweet@HalfSweet.cn"
     data['help'] = {'online': "https://github.com/Air-duino"}
     platforms = []
+    platformsCn = []
 
     PlatformsVersion.extend(GetRepoVersion("Air-duino", "Arduino-AirMCU"))
     for item in PlatformsVersion:
-        platforms.append(PlatformsAirMCU(item))
+        temp,tempCn = PlatformsAirMCU(item)
+        platforms.append(temp)
+        platformsCn.append(tempCn)
     data['platforms'] = platforms
-    tools = [GCC(), CMSIS(), AirISP()]
+    tools = []
+    toolsCn = []
+
+    temp, tempCn = GCC()
+    tools.append(temp)
+    toolsCn.append(tempCn)
+
+    temp, tempCn = CMSIS()
+    tools.append(temp)
+    toolsCn.append(tempCn)
+
+    temp, tempCn = AirISP()
+    tools.append(temp)
+    toolsCn.append(tempCn)
+
     data['tools'] = tools
-    return data
+    dataCn = data
+    dataCn['tools'] = toolsCn
+    return data, dataCn
 
 
 def Encode():
     data = {}
-    data['packages'] = [PackagesAirM2M()]
+    dataCn = {}
+    temp, tempCn = PackagesAirM2M()
+    data['packages'] = [temp]
+    dataCn['packages'] = [tempCn]
     json_str = json.dumps(data, indent=2)
     with open(packagesPath, "w+") as f:
         f.write(json_str)
-    return json_str
+    json_str_cn = json.dumps(dataCn, indent=2)
+    with open(packagesCNPath, "w+") as f:
+        f.write(json_str_cn)
+    return json_str,json_str_cn
 
 
 def main():

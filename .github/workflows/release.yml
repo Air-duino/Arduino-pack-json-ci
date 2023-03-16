@@ -23,7 +23,7 @@ jobs:
 
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "package_air_index.json"
+          artifacts: "package_air_index.json,package_air_cn_index.json"
           tag: "Nightly"
           allowUpdates: true
           

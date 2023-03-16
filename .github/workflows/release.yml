@@ -32,10 +32,7 @@ jobs:
           OSS_CONFIG: ${{ secrets.OSS_CONFIG }}
           OSS_NAME: ${{ secrets.OSS_NAME }}
         run: |
-          ls -a
           sudo apt update
-          sudo pip3 install setuptools
-          sudo pip3 install -r requirements.txt
           wget http://gosspublic.alicdn.com/ossutil/1.7.1/ossutil64
           sudo chmod 755 ossutil64
           echo -e "${OSS_CONFIG}" > ~/.ossutilconfig

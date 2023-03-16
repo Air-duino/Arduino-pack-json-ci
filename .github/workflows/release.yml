@@ -25,3 +25,5 @@ jobs:
         with:
           artifacts: "package_air_index.json"
           tag: "Nightly"
+          allowUpdates: true
+          

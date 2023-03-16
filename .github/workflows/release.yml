@@ -4,7 +4,8 @@ on:
   push:
 
   repository_dispatch:
-    types: [AirMCU]
+    types: [AirMCU,AirISP]
+    
 
   workflow_dispatch:
 

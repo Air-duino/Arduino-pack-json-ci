@@ -26,4 +26,19 @@ jobs:
           artifacts: "package_air_index.json,package_air_cn_index.json"
           tag: "Nightly"
           allowUpdates: true
-          
+      
+      - name: publish OSS
+        env: 
+          OSS_CONFIG: ${{ secrets.OSS_CONFIG }}
+          OSS_NAME: ${{ secrets.OSS_NAME }}
+        run: |
+          sudo apt update
+          sudo pip3 install setuptools
+          sudo pip3 install -r requirements.txt
+          cd ..
+          wget http://gosspublic.alicdn.com/ossutil/1.7.1/ossutil64
+          sudo chmod 755 ossutil64
+          echo -e "${OSS_CONFIG}" > ~/.ossutilconfig
+          ./ossutil64 rm oss://${OSS_NAME}/ -r -f
+          ./ossutil64 cp -u -r temp/ oss://${OSS_NAME}/
+          ./ossutil64 cp -u package_air_cn_index.json oss://${OSS_NAME}/

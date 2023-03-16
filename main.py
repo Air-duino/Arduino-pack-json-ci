@@ -218,7 +218,7 @@ def CMSIS():
 
     data['systems'] = system
     dataCn['systems'] = systemCn
-    return data,dataCn
+    return data, dataCn
 
 
 def PlatformsAirMCU(version):
@@ -241,7 +241,7 @@ def PlatformsAirMCU(version):
                                  {'packager': "AirM2M", 'name': "CMSIS", 'version': CMSISVersion},
                                  {'packager': "AirM2M", 'name': "AirISP", 'version': AirISPVersion}]
     dataCn = data
-    dataCn['url'] = "https://arduino.luatos.com/" + version + "/" + fileName
+    dataCn['url'] = "https://arduino.luatos.com/" + fileName
     return data, dataCn
 
 
@@ -258,7 +258,7 @@ def PackagesAirM2M():
 
     PlatformsVersion.extend(GetRepoVersion("Air-duino", "Arduino-AirMCU"))
     for item in PlatformsVersion:
-        temp,tempCn = PlatformsAirMCU(item)
+        temp, tempCn = PlatformsAirMCU(item)
         platforms.append(temp)
         platformsCn.append(tempCn)
     data['platforms'] = platforms
@@ -295,7 +295,7 @@ def Encode():
     json_str_cn = json.dumps(dataCn, indent=2)
     with open(packagesCNPath, "w+") as f:
         f.write(json_str_cn)
-    return json_str,json_str_cn
+    return json_str, json_str_cn
 
 
 def main():

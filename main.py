@@ -7,9 +7,40 @@ import os
 packagesPath = "package_air_index.json"
 
 GCCVersion = "12.2.1-1.2"
-AirISPVersion = "1.1.1.0"
+AirISPVersion = "" #不定义具体的版本，在GetAirISPVersion函数中创造
 CMSISVersion = "5.7.0"
-PlatformsVersion = ["0.0.1"]
+PlatformsVersion = []
+
+
+def GetAirISPVersion():
+    url = "https://api.github.com/repos/Air-duino/AirISP/releases"
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        tags = []
+        for release in data:
+            tag = release["tag_name"]
+            tags.append(tag)
+        global AirISPVersion
+        AirISPVersion = str(tags[0])
+    else:
+        print(f"Request failed: {response.status_code}")
+
+def GetRepoVersion(owner, repo):
+    url = f"https://api.github.com/repos/{owner}/{repo}/releases"
+
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        tags = []
+        for release in data:
+            tag = release["tag_name"]
+            tags.append(tag)
+        return tags
+    else:
+        print(f"Request failed: {response.status_code}")
 
 
 def ComputeSHA256(path):
@@ -183,6 +214,8 @@ def PackagesAirM2M():
     data['email'] = "HalfSweet@HalfSweet.cn"
     data['help'] = {'online': "https://github.com/Air-duino"}
     platforms = []
+
+    PlatformsVersion.extend(GetRepoVersion("Air-duino", "Arduino-AirMCU"))
     for item in PlatformsVersion:
         platforms.append(PlatformsAirMCU(item))
     data['platforms'] = platforms
@@ -201,6 +234,7 @@ def Encode():
 
 
 def main():
+    GetAirISPVersion()
     print(Encode())
 
 

@@ -231,7 +231,7 @@ def PlatformsAirMCU(version):
     data['architecture'] = "AirMCU"
     data['version'] = version
     data['category'] = "Contributed"
-    data['help'] = {'online': "https://github.com/Air-duino/Arduino-AirMCU"}
+    data['help'] = {'online': "https://arduino.luatos.com"}
     data['url'] = url
     data['archiveFileName'] = fileName
     data['checksum'] = "SHA-256:" + ComputeSHA256(fileName)
@@ -250,9 +250,9 @@ def PackagesAirM2M():
     dataCn = {}
     data['name'] = "AirM2M"
     data['maintainer'] = "AirM2M"
-    data['websiteURL'] = "https://github.com/Air-duino"
+    data['websiteURL'] = "https://arduino.luatos.com"
     data['email'] = "HalfSweet@HalfSweet.cn"
-    data['help'] = {'online': "https://github.com/Air-duino"}
+    data['help'] = {'online': "https://arduino.luatos.com"}
     platforms = []
     platformsCn = []
 

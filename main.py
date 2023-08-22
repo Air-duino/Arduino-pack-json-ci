@@ -103,14 +103,14 @@ def DownloadAndCheck(url, fileName, host, suffixName):
     temp['checksum'] = "SHA-256:" + ComputeSHA256(tempPath)
     temp['size'] = ComputeSize(tempPath)
 
-    tempCn = temp
+    tempCn = temp.copy()
     tempCn['url'] = "https://arduino.luatos.com/" + fileName + suffixName
     return temp, tempCn
 
 
 def GCC():
     data = {'name': "xpack-arm-none-eabi-gcc", 'version': GCCVersion}
-    dataCn = data
+    dataCn = data.copy()
     system = []
     systemCn = []
 
@@ -147,7 +147,7 @@ def GCC():
 
 def AirISP():
     data = {'name': "AirISP", 'version': AirISPVersion}
-    dataCn = data
+    dataCn = data.copy()
     system = []
     systemCn = []
 
@@ -185,7 +185,7 @@ def AirISP():
 
 def CMSIS():
     data = {'name': "CMSIS", 'version': CMSISVersion}
-    dataCn = data
+    dataCn = data.copy()
     system = []
     systemCn = []
 
@@ -240,7 +240,7 @@ def PlatformsAirMCU(version):
     data['toolsDependencies'] = [{'packager': "AirM2M", 'name': "xpack-arm-none-eabi-gcc", 'version': GCCVersion},
                                  {'packager': "AirM2M", 'name': "CMSIS", 'version': CMSISVersion},
                                  {'packager': "AirM2M", 'name': "AirISP", 'version': AirISPVersion}]
-    dataCn = data
+    dataCn = data.copy()
     dataCn['url'] = "https://arduino.luatos.com/" + fileName
     return data, dataCn
 
@@ -278,7 +278,7 @@ def PackagesAirM2M():
     toolsCn.append(tempCn)
 
     data['tools'] = tools
-    dataCn = data
+    dataCn = data.copy()
     dataCn['tools'] = toolsCn
     return data, dataCn
 

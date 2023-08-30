@@ -253,6 +253,7 @@ def PackagesAirM2M():
     data['websiteURL'] = "https://arduino.luatos.com"
     data['email'] = "HalfSweet@HalfSweet.cn"
     data['help'] = {'online': "https://arduino.luatos.com"}
+    dataCn = data.copy()
     platforms = []
     platformsCn = []
 
@@ -262,6 +263,7 @@ def PackagesAirM2M():
         platforms.append(temp)
         platformsCn.append(tempCn)
     data['platforms'] = platforms
+    dataCn['platforms'] = platformsCn
     tools = []
     toolsCn = []
 
@@ -278,7 +280,6 @@ def PackagesAirM2M():
     toolsCn.append(tempCn)
 
     data['tools'] = tools
-    dataCn = data.copy()
     dataCn['tools'] = toolsCn
     return data, dataCn
 

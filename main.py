@@ -236,7 +236,11 @@ def PlatformsAirMCU(version):
     data['archiveFileName'] = fileName
     data['checksum'] = "SHA-256:" + ComputeSHA256(fileName)
     data['size'] = ComputeSize(fileName)
-    data['boards'] = [{'name': "Air001"}]
+    data['boards'] = [
+        {'name': "Air001"},
+        {'name': "AirM2M Core Air001"},
+        {'name': "Air32"},
+        {'name': "Air401"}]
     data['toolsDependencies'] = [{'packager': "AirM2M", 'name': "xpack-arm-none-eabi-gcc", 'version': GCCVersion},
                                  {'packager': "AirM2M", 'name': "CMSIS", 'version': CMSISVersion},
                                  {'packager': "AirM2M", 'name': "AirISP", 'version': AirISPVersion}]

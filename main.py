@@ -146,7 +146,7 @@ def GCC():
 
 
 def AirISP():
-    data = {'name': "AirISP-next", 'version': AirISPVersion}
+    data = {'name': "AirISP", 'version': AirISPVersion}
     dataCn = data
     system = []
     systemCn = []

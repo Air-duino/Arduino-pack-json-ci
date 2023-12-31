@@ -14,7 +14,7 @@ PlatformsVersion = []
 
 
 def GetAirISPVersion():
-    url = "https://api.github.com/repos/Air-duino/AirISP/releases"
+    url = "https://api.github.com/repos/Air-duino/AirISP-next/releases"
     response = requests.get(url)
 
     if response.status_code == 200:
@@ -146,35 +146,35 @@ def GCC():
 
 
 def AirISP():
-    data = {'name': "AirISP", 'version': AirISPVersion}
-    dataCn = data.copy()
+    data = {'name': "AirISP-next", 'version': AirISPVersion}
+    dataCn = data
     system = []
     systemCn = []
 
     def f(host, suffixName):
-        url = "https://github.com/Air-duino/AirISP/releases/download/" + AirISPVersion + "/"
-        fileName = "AirISP-"
+        url = "https://github.com/Air-duino/AirISP-next/releases/download/" + AirISPVersion + "/"
+        fileName = f"AirISP-{AirISPVersion}-"
         return DownloadAndCheck(url, fileName, host, suffixName)
 
-    temp, tempCn = f("x86_64-mingw32", "win-x64.zip")
+    temp, tempCn = f("x86_64-mingw32", "windows-x86_64.zip")
     system.append(temp)
     systemCn.append(tempCn)
-    temp, tempCn = f("i686-mingw32", "win-x64.zip")
+    temp, tempCn = f("i686-mingw32", "windows-x86_64.zip")
     system.append(temp)
     systemCn.append(tempCn)
-    temp, tempCn = f("x86_64-apple-darwin", "osx-x64.tar")
+    temp, tempCn = f("x86_64-apple-darwin", "macos-x86_64.tar.gz")
     system.append(temp)
     systemCn.append(tempCn)
-    temp, tempCn = f("arm64-apple-darwin", "osx-arm64.tar")
+    temp, tempCn = f("arm64-apple-darwin", "macos-aarch64.tar.gz")
     system.append(temp)
     systemCn.append(tempCn)
-    temp, tempCn = f("arm-linux-gnueabihf", "linux-arm.tar")
+    # temp, tempCn = f("arm-linux-gnueabihf", "linux-arm.zip")
+    # system.append(temp)
+    # systemCn.append(tempCn)
+    temp, tempCn = f("aarch64-linux-gnu", "linux-aarch64.tar.gz")
     system.append(temp)
     systemCn.append(tempCn)
-    temp, tempCn = f("aarch64-linux-gnu", "linux-arm64.tar")
-    system.append(temp)
-    systemCn.append(tempCn)
-    temp, tempCn = f("x86_64-pc-linux-gnu", "linux-x64.tar")
+    temp, tempCn = f("x86_64-pc-linux-gnu", "linux-x86_64.tar.gz")
     system.append(temp)
     systemCn.append(tempCn)
 
